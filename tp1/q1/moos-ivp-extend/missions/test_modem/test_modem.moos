@@ -1,0 +1,57 @@
+// Fichier de test de l'application uSimModem
+
+Community  = test_modem
+ServerHost = localhost
+ServerPort = 9000
+
+ProcessConfig = ANTLER
+{
+  Run = MOOSDB         @ NewConsole = false
+  Run = uSimModem      @ NewConsole = false
+  Run = uXMS           @ NewConsole = true
+  Run = uTimerScript   @ NewConsole = false
+}
+
+ProcessConfig = uSimModem
+{
+  AppTick   = 0.5  // une variable RANGE sera publiée à 0.5Hz
+  CommsTick = 4
+
+  // la position de la balise, constante, est configurée ci-dessous
+  BEACON_X = 0
+  BEACON_Y = 3
+  BEACON_Z = 20
+}
+
+// L'application ci-dessous est une variante de uMS
+// et affiche les valeurs de la MOOSDB dans un terminal
+
+ProcessConfig = uXMS
+{
+  AppTick   = 4
+  CommsTick = 4
+
+  var = NAV_X, NAV_Y, NAV_Z, RANGE
+  colormap = RANGE, green
+}
+
+// L'application ci-dessous génère des valeurs aléatoires
+// pour les variables NAV_X, NAV_Y, NAV_Z.
+// Cela permet de tester le problème sans uPokeDB
+
+ProcessConfig = uTimerScript
+{
+  AppTick   = 1
+
+  randvar = varname=RANDOM_X, min=0, max=10, key=at_reset
+  event = var=NAV_X, val=$[RANDOM_X]
+
+  randvar = varname=RANDOM_Y, min=0, max=10, key=at_reset
+  event = var=NAV_Y, val=$[RANDOM_Y]
+
+  randvar = varname=RANDOM_Z, min=0, max=10, key=at_reset
+  event = var=NAV_Z, val=$[RANDOM_Z]
+
+  reset_max   = unlimited
+  reset_time  = end
+}
