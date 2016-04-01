@@ -1,0 +1,74 @@
+Community  = boat
+ServerHost = localhost
+ServerPort = 9000
+
+LatOrigin  = 48.3909425
+LongOrigin = -4.4346433
+
+ProcessConfig = ANTLER
+{
+  MSBetweenLaunches = 400
+
+  Run = MOOSDB          @ NewConsole = false
+
+  // Processes
+  Run = pNodeReporter   @ NewConsole = false
+
+  // Simulation
+  Run = uSimMarine      @ NewConsole = false
+  Run = uTimerScript    @ NewConsole = false
+
+  // Interface Homme Machine
+  //Run = uJoystick       @ NewConsole = false
+  Run = uMS             @ NewConsole = false
+  Run = pMarineViewer   @ NewConsole = false
+}
+
+ProcessConfig = pMarineViewer
+{
+  AppTick   = 4
+  CommsTick = 4
+
+  tiff_file = moulin_blanc.tif
+  zoom      = 1.0
+
+  appcast_viewable = true
+
+  // les paramètres par défaut sont conservés
+  // pour plus d'informations, entrer pMarineViewer -e
+  // ou lire la documentation en ligne de l'application
+}
+
+ProcessConfig = uSimMarine
+{
+  AppTick   = 4
+  CommsTick = 4
+
+  start_pos = x=500, y=0, speed=0, heading=0, depth=0
+  prefix    = NAV  // default is USM_
+
+  // les paramètres par défaut sont conservés
+  // pour plus d'informations, entrer uSimMarine -e
+  // ou lire la documentation en ligne de l'application
+}
+
+ProcessConfig = pNodeReporter
+{
+  AppTick   = 4
+  CommsTick = 4
+                         
+  platform_type      = ship  // détermine l'apparence du robot dans la vue
+  platform_length    = 10    // m
+}
+
+ProcessConfig = uTimerScript
+{
+  AppTick   = 0.1
+
+  randvar = varname=RANDOM_RUDDER, min=-50, max=50, key=at_reset
+  event = var=DESIRED_RUDDER, val=$[RANDOM_RUDDER]
+  event = var=DESIRED_THRUST, val=30
+
+  reset_max   = unlimited
+  reset_time  = end
+}

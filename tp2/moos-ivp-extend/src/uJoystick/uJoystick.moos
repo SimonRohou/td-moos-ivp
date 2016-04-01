@@ -1,0 +1,9 @@
+//------------------------------------------------
+// uJoystick config block
+
+ProcessConfig = uJoystick
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+
