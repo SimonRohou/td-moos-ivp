@@ -1,0 +1,104 @@
+initialize LANCEMENT = false
+initialize HORS_PORT = false
+initialize FIN_INSPECTION = false
+initialize FIN_EXPLORATION = false
+
+// Définitions des modes
+
+  // Niveau 1
+
+    set MODE = ACTIVE {
+      LANCEMENT = true
+    } INACTIVE
+
+  // Niveau 2
+
+    set MODE = DEPART {
+      MODE = ACTIVE
+      HORS_PORT = false
+      FIN_INSPECTION = false
+      FIN_EXPLORATION = false
+    }
+
+    set MODE = INSPECTION {
+      MODE = ACTIVE
+      FIN_INSPECTION = false
+      FIN_EXPLORATION = false
+      HORS_PORT = true
+    }
+
+    set MODE = EXPLORATION {
+      MODE = ACTIVE
+      FIN_EXPLORATION = false
+      FIN_EXPLORATION = false
+      HORS_PORT = true
+    }
+
+    set MODE = RETOUR {
+      MODE = ACTIVE
+      FIN_INSPECTION = true
+      FIN_EXPLORATION = true
+      HORS_PORT = true
+    }
+
+// Configuration des behaviors
+
+Behavior = BHV_Waypoint
+{ 
+  name      = waypt_sortie_port
+  pwt       = 100
+  condition = MODE == DEPART
+  endflag   = HORS_PORT = true
+  speed     = 2.0
+
+  points = 195,-128 : 300,-18 : 360,115 : 600,115
+
+  perpetual = true
+}
+
+Behavior = BHV_Waypoint
+{ 
+  name      = waypt_retour_port
+  pwt       = 100
+  condition = MODE == RETOUR
+  endflag   = HORS_PORT = false
+  endflag   = FIN_INSPECTION = false
+  speed     = 2.0
+
+  points = 600,115 : 360,115 : 300,-18 : 195,-128 : 112,-128
+
+  perpetual = true
+}
+
+Behavior = BHV_Waypoint
+{ 
+  name      = waypt_exploration
+  pwt       = 100
+  condition = MODE == EXPLORATION
+  endflag   = FIN_EXPLORATION = true
+  speed     = 5.0
+
+  points = 500,0 : 500,-200 : 550,-200 : 550,0 : 600,0 : 600,-200 : 650,-200 : 650,0 : 700,0 : 700,-200 : 750,-200 : 750,0 : 800,0 : 800,-200 : 850,-200 : 850,0 : 900,0 : 900,-200
+
+  capture_line = true
+  lead = 10
+}
+
+Behavior = BHV_StationKeep
+{
+  name      = waypt_maintien_position
+  pwt       = 100
+  condition = MODE == INSPECTION
+  endflag   = FIN_INSPECTION = true
+
+  duration = 400
+
+  station_pt = 800,300
+  inner_radius = 10
+  outer_radius = 30
+  hibernation_radius = 60
+  outer_speed = 8.0
+  transit_speed = 5.5
+
+  perpetual = true
+}
