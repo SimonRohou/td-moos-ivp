@@ -1,0 +1,55 @@
+Community  = boat
+ServerHost = localhost
+ServerPort = 9000
+
+// Configuration d'un robot et de deux balises
+// Les distances aux balises sont mesurées par deux instances de uSimModem
+// Un algorithme SIVIA permet de calculer la position du robot
+
+// Lancer Vibes, puis cette mission avec pAntler
+
+ProcessConfig = ANTLER
+{
+  Run = MOOSDB          @ NewConsole = false
+  Run = uSimModem       @ NewConsole = true ~uSimModem_Beacon1
+  Run = uSimModem       @ NewConsole = true ~uSimModem_Beacon2
+  Run = pSimpleSIVIA    @ NewConsole = true
+  Run = uMS             @ NewConsole = false
+}
+
+ProcessConfig = pSimpleSIVIA
+{
+  AppTick   = 4
+  CommsTick = 4
+
+  SIVIA_PRECISION = 0.1
+  RANGE_UNCERTAINTY = 0.5
+
+  // la position supposée des balises est configurée ci-dessous
+
+  BEACON1_X = 1
+  BEACON1_Y = 2
+  
+  BEACON2_X = 2
+  BEACON2_Y = 5
+}
+
+ProcessConfig = uSimModem_Beacon1
+{
+  AppTick   = 0.1
+  CommsTick = 4
+
+  // la position réelle de la balise est configurée ci-dessous
+  BEACON_X = 1
+  BEACON_Y = 2
+}
+
+ProcessConfig = uSimModem_Beacon2
+{
+  AppTick   = 0.1
+  CommsTick = 4
+
+  // la position réelle de la balise est configurée ci-dessous
+  BEACON_X = 2
+  BEACON_Y = 5
+}

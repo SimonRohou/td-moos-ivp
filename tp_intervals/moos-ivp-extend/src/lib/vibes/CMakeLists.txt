@@ -1,0 +1,14 @@
+SET(SRC
+  vibes.cpp
+)
+
+SET(HEADERS 
+  vibes.h
+) 
+
+FILE(COPY ${HEADERS} DESTINATION ${HEADERS_DIR})
+
+ADD_LIBRARY(vibes ${SRC})
+
+TARGET_LINK_LIBRARIES(vibes
+   )

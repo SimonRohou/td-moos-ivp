@@ -1,0 +1,13 @@
+//------------------------------------------------
+// uSimModem config block
+
+ProcessConfig = uSimModem
+{
+  AppTick   = 0.5  // une variable RANGE sera publiée à 0.5Hz
+  CommsTick = 4
+
+  // la position de la balise, constante, est configurée ci-dessous
+  BEACON_X = 0
+  BEACON_Y = 3
+  BEACON_Z = 20
+}

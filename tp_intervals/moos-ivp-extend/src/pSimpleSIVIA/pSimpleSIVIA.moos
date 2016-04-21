@@ -1,0 +1,19 @@
+//------------------------------------------------
+// pSimpleSIVIA config block (documentation)
+
+ProcessConfig = pSimpleSIVIA
+{
+  AppTick   = 4
+  CommsTick = 4
+
+  SIVIA_PRECISION = 0.1
+  RANGE_UNCERTAINTY = 0.5
+
+  // la position supposée des balises est configurée ci-dessous
+  
+  BEACON1_X = 1
+  BEACON1_Y = 2
+  
+  BEACON2_X = 2
+  BEACON2_Y = 5
+}
